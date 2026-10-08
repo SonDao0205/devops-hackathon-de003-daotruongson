@@ -8,10 +8,10 @@
 
 ## 2. Môi trường triển khai
 
-Hệ điều hành : Ubuntu 26.04.1 LTS
-Phiên bản nginx : nginx/1.28.3
-Git : git version 2.53.0
-Nơi chạy : Máy ảo Lima trên Macos
+- Hệ điều hành : Ubuntu 26.04.1 LTS
+- Phiên bản nginx : nginx/1.28.3
+- Git : git version 2.53.0
+- Nơi chạy : Máy ảo Lima trên Macos
 
 ## 3. Cấu trúc dự án
 
