@@ -77,90 +77,54 @@ mkdir -p src/nginx
 cp nginx/sondao.conf src/nginx/sondao.conf
 
 
-Đã chỉnh `src/nginx/sondao.conf` để dùng cổng `8081`, IP guest, và document root của dự án.
+- chỉnh src/nginx/sondao.conf để dùng cổng 8081, IP guest, và document root của dự án.
 
-```bash
 sudo cp /var/www/devops-hackathon-de003-daotruongson/src/nginx/sondao.conf /etc/nginx/sites-available/sondao.conf
 sudo ln -sfn /etc/nginx/sites-available/sondao.conf /etc/nginx/sites-enabled/sondao.conf
 sudo rm -f /etc/nginx/sites-enabled/default
 sudo nginx -t
 sudo systemctl enable --now nginx
 sudo systemctl reload nginx
-```
 
-Kết quả kiểm tra cấu hình:
+- kết quả kiểm tra cấu hình:
 
-```text
 nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
 nginx: configuration file /etc/nginx/nginx.conf test is successful
-```
+
 
 ## 7. Kiểm tra và minh chứng
 
-Kiểm tra trong Ubuntu:
+- kiểm tra nginx hoạt động
 
-```bash
 systemctl is-active nginx
 curl -I http://127.0.0.1:8081
-```
 
-Kết quả thực tế: Nginx trả `active`; curl trả `HTTP/1.1 200 OK`.
+- kết quả : Nginx trả active và curl trả HTTP/1.1 200 OK
 
-Thêm ảnh chụp vào `screenshots/` và giữ tên theo thứ tự yêu cầu:
-
-| File ảnh | Nội dung |
-|---|---|
-| `01-user-id.png` | Kết quả `id` của user `sondao` |
-| `02-services.png` | Nginx active và enabled |
-| `03-firewall.png` | UFW active và rule cổng `8081` IPv4/IPv6 |
-| `04-website.png` | Website mở trên trình duyệt, thấy URL IP:cổng |
-| `05-github.png` | Repository public trên GitHub |
-| `06-commits.png` | Lịch sử có ít nhất 4 commit |
-| `07-update.png` | Website sau lần cập nhật nội dung |
 
 Chèn ảnh vào README sau khi lưu, ví dụ: `![Trạng thái UFW](screenshots/03-firewall.png)`. Ảnh terminal cần thấy prompt user và kết quả đầy đủ.
 
 ## 8. Quy trình cập nhật website
 
-Trên máy phát triển, sửa `src/index.html`, rồi commit và push:
+- máy cá nhân, sửa index.html rồi commit và push:
 
-```bash
 git add src/index.html
 git commit -m "docs: update website content"
 git push
 ```
 
-Trên máy ảo:
+- trên máy ảo:
 
-```bash
 cd /var/www/devops-hackathon-de003-daotruongson
 git pull
-```
 
 Kiểm tra lại website:
 
-```bash
 curl http://127.0.0.1:8081
-```
-
-Với nội dung HTML tĩnh, không cần reload Nginx sau khi cập nhật file. Chụp ảnh trang đã cập nhật thành `07-update.png`.
 
 ## 9. Sự cố và cách khắc phục
 
-### Clone repo báo Permission denied
+- clone repo báo Permission denied
 
-Không chạy `git clone` khi đang ở bên trong thư mục repo. Clone từ `/var/www`. Nếu clone bằng `sudo`, đổi quyền sở hữu bằng lệnh sau (không gõ dấu ngoặc nhọn quanh username):
-
-```bash
+clone khi chưa gán quyền khiến báo chưa có quyền , cách khắc phục :
 sudo chown -R sondao:sondao /var/www/devops-hackathon-de003-daotruongson
-```
-
-### Nginx không truy cập được
-
-`nginx -t` thành công, Nginx `active`, UFW mở cổng `8081`, và curl trong guest trả `200 OK`. Tuy nhiên `192.168.5.15` là IP user-mode mặc định của Lima, không truy cập trực tiếp được từ host theo thiết kế. Dùng `http://localhost:8081` trên Mac nếu Lima tự chuyển tiếp cổng. Nếu yêu cầu phải dùng IP guest trực tiếp, chuyển VM sang cấu hình mạng VMNet phù hợp, kiểm tra IP mới, rồi cập nhật `server_name`, README và ảnh minh chứng.
-
-## Nộp bài
-
-Trước khi nộp, điền các thông tin cá nhân còn thiếu, xác nhận repository public, kiểm tra có ít nhất 4 commit và đẩy README cùng server block/ảnh minh chứng lên GitHub. Nộp repository:
-
-<https://github.com/SonDao0205/devops-hackathon-de003-daotruongson>
