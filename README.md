@@ -111,7 +111,6 @@ Chèn ảnh vào README sau khi lưu, ví dụ: `![Trạng thái UFW](screenshot
 git add src/index.html
 git commit -m "docs: update website content"
 git push
-```
 
 - trên máy ảo:
 
